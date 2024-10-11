@@ -15,11 +15,35 @@ namespace TestProject3
         [SetUp]
         public void SetUp()
         {
+            ChromeOptions options = new ChromeOptions();
+            //Ensure Chrome runs in headless mode
+            options.AddArguments("headless");
+            //Bypasssecurity mode
+            options.AddArguments("no-sandbox");
+            //Overcome limited resourse problem
+            options.AddArguments("disable-dev-shm-usage");
+            //Applicable to Windows Os only
+            options.AddArguments("disable-gpu");
+            //Set window size to ensure elements are visible
+            options.AddArguments("window-size=1920x1080");
+            //Disable extentions
+            options.AddArguments("disable-extentions");
+            //Remote debugging port
+            options.AddArguments("remote-debugging-port=9222");
+
             // Create object of ChromeDriver
-            driver = new ChromeDriver();
+            driver = new ChromeDriver(options);
 
             // Add implicit wait
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            // Quit the driver
+            driver.Quit();
+            driver.Dispose();
         }
 
         [Test]

@@ -20,7 +20,23 @@ namespace TestProject1
         [OneTimeSetUp]
         public void SetUp()
         {
-            driver = new ChromeDriver();
+            ChromeOptions options = new ChromeOptions();
+            //Ensure Chrome runs in headless mode
+            options.AddArguments("headless");
+            //Bypasssecurity mode
+            options.AddArguments("no-sandbox");
+            //Overcome limited resourse problem
+            options.AddArguments("disable-dev-shm-usage");
+            //Applicable to Windows Os only
+            options.AddArguments("disable-gpu");
+            //Set window size to ensure elements are visible
+            options.AddArguments("window-size=1920x1080");
+            //Disable extentions
+            options.AddArguments("disable-extentions");
+            //Remote debugging port
+            options.AddArguments("remote-debugging-port=9222");
+
+            driver = new ChromeDriver(options);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             driver.Url = "http://softuni-qa-loadbalancer-2137572849.eu-north-1.elb.amazonaws.com/number-calculator/";
 
@@ -36,6 +52,7 @@ namespace TestProject1
         public void TearDown()
         {
             driver.Quit();
+            driver.Dispose();
         }
 
         public void PerformCalculation(string firstNumber, string operation,
