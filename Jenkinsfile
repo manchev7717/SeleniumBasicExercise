@@ -12,15 +12,6 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Install Chrome') {
-            steps {
-                // Install Google Chrome
-                bat '''
-                sudo apt-get update
-                sudo apt-get install -y google-chrome-stable
-                '''
-            }
-        }
 
         stage('Install Dependencies') {
             steps {
